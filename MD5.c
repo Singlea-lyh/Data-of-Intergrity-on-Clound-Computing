@@ -32,7 +32,7 @@ void MD5Update(MD5_CTX *context, unsigned char *input, unsigned int inputlen)
 
 	if (inputlen >= partlen)
 	{
-		memcpy_s(&context->buffer[index],64,input, partlen);
+		memcpy_s(&context->buffer[index],64, input, partlen);
 		MD5Transform(context->state, context->buffer);
 		for (i = partlen; i + 64 <= inputlen; i += 64)
 			MD5Transform(context->state, &input[i]);
@@ -89,7 +89,7 @@ void MD5Transform(unsigned int state[4], unsigned char block[64])
 	unsigned int d = state[3];
 	unsigned int x[64];
 	MD5Decode(x, block, 64);
-    FF(a, b, c, d, x[0], 7, 0xd76aa478); /* 1 */
+	FF(a, b, c, d, x[0], 7, 0xd76aa478); /* 1 */
 	FF(d, a, b, c, x[1], 12, 0xe8c7b756); /* 2 */
 	FF(c, d, a, b, x[2], 17, 0x242070db); /* 3 */
 	FF(b, c, d, a, x[3], 22, 0xc1bdceee); /* 4 */
@@ -164,76 +164,12 @@ void MD5Transform(unsigned int state[4], unsigned char block[64])
 	state[2] += c;
 	state[3] += d;
 }
-#if 1
-void *MD5(char *str,char *decrypt)
-{
-	//unsigned char decrypt[16] = { 0 };
 
-	//unsigned char decrypt[16] = { 0 };
-	//unsigned char transform[16] = { 0 };
-	//unsigned char tran[16][1] = { 0 };
+void *MD5(char *str, char *decrypt)
+{
 	MD5_CTX md5;
 	MD5Init(&md5);
 	MD5Update(&md5, str, strlen((char *)str));
 	MD5Final(&md5, decrypt);
-#if 0
-	for (int i = 0; i<16; i++)
-	{
-		printf_s("%02x", decrypt[i]);
-		
-	}
-	printf_s("\n");
-	
-#if 0
-	short i;
-	unsigned char highByte, lowByte;
-
-	for ( i = 0; i < 16; i++)
-	{
-		highByte = decrypt[i] >> 4;
-		lowByte = decrypt[i] & 0x0f;
-
-		highByte += 0x30;
-
-		if (highByte > 0x39)
-			transform[i * 2] = highByte + 0x07;
-		else
-			transform[i * 2] = highByte;
-
-		lowByte += 0x30;
-		if (lowByte > 0x39)
-			transform[i * 2 + 1] = lowByte + 0x07;
-		else
-			transform[i * 2 + 1] = lowByte;
-	}
-#endif
-#if 0
-	for (int i = 0; i < 16; i++)
-	{
-		char temp[8] = {0};
-		snprintf(temp,8, "%02x", decrypt[i]);
-		transform[i] = temp;
-		//strcat_s(&transform[i],sizeof(transform[i]),temp);
-		printf_s("%02x",transform[i]);
-	}
-
-#endif
-
-#endif
-#if 0
-	sprintf_s(transform,sizeof(transform),"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",\
-		decrypt[0],decrypt[1], decrypt[2], decrypt[3],decrypt[4], decrypt[5], decrypt[6],decrypt[7], decrypt[8], decrypt[9], decrypt[10], decrypt[11],\
-		decrypt[12], decrypt[13], decrypt[14],decrypt[15]); 
-#endif 
-	//strcpy_s(transform, 16, tran);
-#if 0
-
-	for (int i = 0; i < 16; i++)
-	{
-		transform[i] = tran[i][0];
-	}
-#endif
-	//printf_s("\n");
 	return decrypt;
 }
-#endif
